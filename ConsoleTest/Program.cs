@@ -1,11 +1,12 @@
-﻿using GameAdapters.Adapters.AssettoCorsa;
+﻿using GameAdapters.Adapters;
+using GameAdapters.Adapters.AssettoCorsa;
 
-var adapter = new AssettoCorsaStatusAdapter();
-var cancellationToken = new CancellationToken();
-
-adapter.Activated += (sender, args) => Console.WriteLine("AC connected");
-adapter.Deactivated += (sender, args) => Console.WriteLine("AC disconnected");
+var statusManager = new GameStatusManager();
+statusManager.AddAdapter(new AssettoCorsaStatusAdapter());
+statusManager.Activated += (sender, args) => Console.WriteLine($"{args.Name} connected");
+statusManager.Deactivated += (sender, args) => Console.WriteLine($"{args.Name} disconnected");
 
 Console.WriteLine("Listening for games");
-await adapter.Run(cancellationToken);
 
+var cancellationToken = new CancellationToken();
+await statusManager.Run(cancellationToken);

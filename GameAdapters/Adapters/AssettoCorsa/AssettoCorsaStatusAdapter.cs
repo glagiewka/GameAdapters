@@ -1,13 +1,12 @@
 namespace GameAdapters.Adapters.AssettoCorsa;
 
 public class AssettoCorsaStatusAdapter : IGameStatusAdapter {
+    private const string GAME_NAME = "Assetto Corsa";
+
     public event EventHandler? Activated;
     public event EventHandler? Deactivated;
-    private bool _isActive = false;
-
-    public bool IsActive() {
-        return _isActive;
-    }
+    public bool IsActive { get; private set; }
+    public string Name => GAME_NAME;
 
     public GameInfo GetGameInfo() {
         var staticData = GetStaticData();
@@ -17,7 +16,7 @@ public class AssettoCorsaStatusAdapter : IGameStatusAdapter {
         }
 
         return new() {
-            Name = "Assetto Corsa",
+            Name = GAME_NAME, 
                  Version = staticData.Value.ACVersion
         };
     }
@@ -28,13 +27,13 @@ public class AssettoCorsaStatusAdapter : IGameStatusAdapter {
         while(true) {
             var staticData = GetStaticData();
 
-            if (!_isActive && staticData is not null) {
-                _isActive = true;
-                Activated?.Invoke(null, EventArgs.Empty);
+            if (!IsActive && staticData is not null) {
+                IsActive = true;
+                Activated?.Invoke(this, EventArgs.Empty);
             } 
-            if (_isActive && staticData is null) {
-                _isActive = false;
-                Deactivated?.Invoke(null, EventArgs.Empty);
+            if (IsActive && staticData is null) {
+                IsActive = false;
+                Deactivated?.Invoke(this, EventArgs.Empty);
             }
 
             await timer.WaitForNextTickAsync(cancellationToken);

@@ -1,4 +1,4 @@
 namespace GameAdapters.Adapters;
 
-public interface IAdapter {
+public interface IGameAdapter {
 }

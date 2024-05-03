@@ -13,7 +13,7 @@ public class AssettoCorsaStatusAdapter : IGameStatusAdapter {
         var staticData = GetStaticData();
 
         if (!staticData.HasValue) {
-            throw new InvalidOperationException("Unable to read game info if a non active game");
+            throw new InvalidOperationException("Unable to read game info of a non active game");
         }
 
         return new() {

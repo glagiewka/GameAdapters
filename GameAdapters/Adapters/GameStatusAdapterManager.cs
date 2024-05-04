@@ -1,14 +1,17 @@
 namespace GameAdapters.Adapters;
 
-public class GameStatusManager {
+/// <summary>
+/// Monitors if a game status adapter has detected a running game 
+/// </summary>
+public class GameStatusAdapterManager {
     public event EventHandler<IGameStatusAdapter>? Activated;
     public event EventHandler<IGameStatusAdapter>? Deactivated;
  
     private readonly IList<IGameStatusAdapter> _adapters = new List<IGameStatusAdapter>();
 
-    public GameStatusManager AddAdapter(IGameStatusAdapter adapter) {
-        if (IsAlreadyRegistered(adapter)) {
-            throw new InvalidOperationException("An adapter of this type is already registerd");
+    public GameStatusAdapterManager AddAdapter(IGameStatusAdapter adapter) {
+        if (IsAdapterAlreadyRegistered(adapter)) {
+            throw new InvalidOperationException("An adapter of this type is already registered");
         }
 
         _adapters.Add(adapter);
@@ -22,7 +25,7 @@ public class GameStatusManager {
        await Task.WhenAll(_adapters.Select(item => item.Run(cancellationToken))); 
     }
 
-    private bool IsAlreadyRegistered(IGameStatusAdapter adapter) {
+    private bool IsAdapterAlreadyRegistered(IGameStatusAdapter adapter) {
         return _adapters.Select(item => item.GetType()).ToHashSet().Contains(adapter.GetType());
     }
 }

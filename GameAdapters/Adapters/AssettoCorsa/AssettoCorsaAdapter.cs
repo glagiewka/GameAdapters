@@ -1,5 +1,29 @@
 namespace GameAdapters.Adapters.AssettoCorsa;
 
 public class AssettoCorsaAdapter : IGameAdapter {
-    
+    public event EventHandler<Traces>? TracesChanged;
+    public string Name => "Assetto Corsa";
+
+    public async Task Run(CancellationToken cancellationToken) {
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
+        while(true) {
+            Console.WriteLine("Running AC Adapter");
+
+            var physicsData = SharedMemoryReader.ReadPhysics();
+            if (physicsData is not null) {
+                var data = physicsData.Value;
+                var traces = new Traces {
+                    Throttle = data.Gas,
+                             Brake = data.Brake,
+                             Clutch = data.Clutch,
+                             Steering = data.SteerAngle
+                };
+
+                TracesChanged?.Invoke(null, traces);
+            }
+
+            await timer.WaitForNextTickAsync(cancellationToken);
+        }
+    }
 }

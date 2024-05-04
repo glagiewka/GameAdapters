@@ -1,12 +1,29 @@
 ﻿using GameAdapters.Adapters;
 using GameAdapters.Adapters.AssettoCorsa;
 
-var statusManager = new GameStatusManager();
+var statusManager = new GameStatusAdapterManager();
 statusManager.AddAdapter(new AssettoCorsaStatusAdapter());
-statusManager.Activated += (sender, args) => Console.WriteLine($"{args.Name} connected");
-statusManager.Deactivated += (sender, args) => Console.WriteLine($"{args.Name} disconnected");
+
+var adapterCollection = new GameAdapterCollection();
+adapterCollection.AddAdapter(new AssettoCorsaAdapter());
+
+CancellationTokenSource? runningGameAdapterCancellationTokenSource = null;
+
+statusManager.Activated += (sender, args) => { 
+    Console.WriteLine($"{args.Name} connected");
+    runningGameAdapterCancellationTokenSource = new CancellationTokenSource();
+    var adapter = adapterCollection.GetAdapter(args.Name);
+    adapter.TracesChanged += (sender, args) => Console.WriteLine(args.ToString());
+    adapter.Run(runningGameAdapterCancellationTokenSource.Token);
+};
+
+statusManager.Deactivated += (sender, args) => {
+    Console.WriteLine($"{args.Name} disconnected");
+    runningGameAdapterCancellationTokenSource?.Cancel();
+};
 
 Console.WriteLine("Listening for games");
 
-var cancellationToken = new CancellationToken();
-await statusManager.Run(cancellationToken);
+var statusManagerCancellationToken = new CancellationToken();
+await statusManager.Run(statusManagerCancellationToken);
+

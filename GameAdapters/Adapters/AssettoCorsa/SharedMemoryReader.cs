@@ -8,6 +8,10 @@ public class SharedMemoryReader {
         return ReadFile<Static>("Local\\acpmf_static");
     } 
 
+    public static Physics? ReadPhysics() {
+        return ReadFile<Physics>("Local\\acpmf_physics");
+    }
+
     private static T? ReadFile<T>(string fileName) where T : struct {
         try {
             using var file = MemoryMappedFile.OpenExisting(fileName);

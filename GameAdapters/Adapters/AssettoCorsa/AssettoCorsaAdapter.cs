@@ -5,11 +5,9 @@ public class AssettoCorsaAdapter : IGameAdapter {
     public string Name => "Assetto Corsa";
 
     public async Task Run(CancellationToken cancellationToken) {
-        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(100));
 
         while(true) {
-            Console.WriteLine("Running AC Adapter");
-
             var physicsData = SharedMemoryReader.ReadPhysics();
             if (physicsData is not null) {
                 var data = physicsData.Value;

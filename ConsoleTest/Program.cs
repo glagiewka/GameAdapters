@@ -10,16 +10,16 @@ adapterCollection.AddAdapter(new AssettoCorsaAdapter());
 CancellationTokenSource? runningGameAdapterCancellationTokenSource = null;
 
 statusManager.Activated += (sender, args) => { 
-    Console.WriteLine($"{args.Name} connected");
     runningGameAdapterCancellationTokenSource = new CancellationTokenSource();
     var adapter = adapterCollection.GetAdapter(args.Name);
-    adapter.TracesChanged += (sender, args) => Console.WriteLine(args.ToString());
+    adapter.TracesChanged += (sender, args) => PrintTraces(adapter.Name, args); 
     adapter.Run(runningGameAdapterCancellationTokenSource.Token);
 };
 
 statusManager.Deactivated += (sender, args) => {
-    Console.WriteLine($"{args.Name} disconnected");
+    Console.Clear();
     runningGameAdapterCancellationTokenSource?.Cancel();
+    Console.WriteLine("Listening for games");
 };
 
 Console.WriteLine("Listening for games");
@@ -27,3 +27,11 @@ Console.WriteLine("Listening for games");
 var statusManagerCancellationToken = new CancellationToken();
 await statusManager.Run(statusManagerCancellationToken);
 
+void PrintTraces(string name, Traces traces) {
+    Console.Clear();
+    Console.WriteLine(name);
+    Console.WriteLine($"Throttle:\t {ConsoleHelper.PrintLoading(traces.Throttle * 100)} {traces.Throttle}");
+    Console.WriteLine($"Brake:\t\t {ConsoleHelper.PrintLoading(traces.Brake * 100)} {traces.Brake}");
+    Console.WriteLine($"Clutch:\t\t {ConsoleHelper.PrintLoading(traces.Clutch * 100)} {traces.Clutch}");
+    Console.WriteLine($"Steering:\t {ConsoleHelper.PrintRange(traces.Steering * 100)} {traces.Steering}");
+}

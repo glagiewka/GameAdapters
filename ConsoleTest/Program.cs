@@ -30,8 +30,8 @@ await statusManager.Run(statusManagerCancellationToken);
 void PrintTraces(string name, Traces traces) {
     Console.Clear();
     Console.WriteLine(name);
-    Console.WriteLine($"Throttle:\t {ConsoleHelper.PrintLoading(traces.Throttle * 100)} {traces.Throttle}");
-    Console.WriteLine($"Brake:\t\t {ConsoleHelper.PrintLoading(traces.Brake * 100)} {traces.Brake}");
-    Console.WriteLine($"Clutch:\t\t {ConsoleHelper.PrintLoading(traces.Clutch * 100)} {traces.Clutch}");
-    Console.WriteLine($"Steering:\t {ConsoleHelper.PrintRange(traces.Steering * 100)} {traces.Steering}");
+    Console.WriteLine($"Throttle:\t {ConsoleHelper.PrintLoading(traces.Throttle)} {traces.Throttle}");
+    Console.WriteLine($"Brake:\t\t {ConsoleHelper.PrintLoading(traces.Brake)} {traces.Brake}");
+    Console.WriteLine($"Clutch:\t\t {ConsoleHelper.PrintLoading(traces.Clutch)} {traces.Clutch}");
+    Console.WriteLine($"Steering:\t {ConsoleHelper.PrintRange(traces.Steering)} {traces.Steering}");
 }

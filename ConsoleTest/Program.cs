@@ -1,35 +1,19 @@
-﻿using GameAdapters.Adapters;
-using GameAdapters.Adapters.AssettoCorsa;
-
-var statusManager = new GameStatusAdapterManager();
-statusManager.AddAdapter(new AssettoCorsaStatusAdapter());
-
-var adapterCollection = new GameAdapterCollection();
-adapterCollection.AddAdapter(new AssettoCorsaAdapter());
-
-CancellationTokenSource? runningGameAdapterCancellationTokenSource = null;
-
-statusManager.Activated += (sender, args) => { 
-    runningGameAdapterCancellationTokenSource = new CancellationTokenSource();
-    var adapter = adapterCollection.GetAdapter(args.Name);
-    adapter.TracesChanged += (sender, args) => PrintTraces(adapter.Name, args); 
-    adapter.Run(runningGameAdapterCancellationTokenSource.Token);
-};
-
-statusManager.Deactivated += (sender, args) => {
-    Console.Clear();
-    runningGameAdapterCancellationTokenSource?.Cancel();
-    Console.WriteLine("Listening for games");
-};
+﻿using ConsoleTest;
+using GameAdapters.Adapters;
 
 Console.WriteLine("Listening for games");
+var gameManager = new GameAdapterManager();
 
-var statusManagerCancellationToken = new CancellationToken();
-await statusManager.Run(statusManagerCancellationToken);
+gameManager.GameStarted += (sender, args) => Console.WriteLine($"{args.Name} started");
+gameManager.GameEnded += (sender, name) => Console.WriteLine($"{name} ended");
+gameManager.TracesChanged += (sender, args) => PrintTraces(args);
 
-void PrintTraces(string name, Traces traces) {
+await gameManager.Run();
+
+void PrintTraces(Traces traces)
+{
     Console.Clear();
-    Console.WriteLine(name);
+    //Console.WriteLine(traces);
     Console.WriteLine($"Throttle:\t {ConsoleHelper.PrintLoading(traces.Throttle)} {traces.Throttle}");
     Console.WriteLine($"Brake:\t\t {ConsoleHelper.PrintLoading(traces.Brake)} {traces.Brake}");
     Console.WriteLine($"Clutch:\t\t {ConsoleHelper.PrintLoading(traces.Clutch)} {traces.Clutch}");

@@ -1,5 +1,6 @@
 ﻿using ConsoleTest;
 using GameAdapters.Adapters;
+using GameAdapters.Adapters.Models;
 
 Console.WriteLine("Listening for games");
 var gameManager = new GameAdapterManager();

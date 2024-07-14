@@ -1,4 +1,5 @@
 using GameAdapters.Adapters.AssettoCorsa;
+using GameAdapters.Adapters.Models;
 
 namespace GameAdapters.Adapters;
 

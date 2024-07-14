@@ -1,3 +1,6 @@
+using GameAdapters.Adapters.Extensions;
+using GameAdapters.Adapters.Models;
+
 namespace GameAdapters.Adapters.AssettoCorsa;
 
 public class AssettoCorsaAdapter : IGameAdapter
@@ -20,7 +23,8 @@ public class AssettoCorsaAdapter : IGameAdapter
                     Throttle = data.Gas,
                     Brake = data.Brake,
                     Clutch = data.Clutch,
-                    Steering = data.SteerAngle
+                    Steering = data.SteerAngle,
+                    Timestamp = DateTime.UtcNow.GetMillisecondsSinceEpoch()
                 };
 
                 TracesChanged?.Invoke(null, traces);

@@ -1,4 +1,6 @@
 using GameAdapters.Adapters.AssettoCorsa.Models;
+using GameAdapters.Adapters.Extensions;
+using GameAdapters.Adapters.Models;
 
 namespace GameAdapters.Adapters.AssettoCorsa;
 
@@ -22,7 +24,8 @@ public class AssettoCorsaStatusAdapter : IGameStatusAdapter
         return new GameInfo
         {
             Name = GameName,
-            Version = staticData.Value.ACVersion
+            Version = staticData.Value.ACVersion,
+            Timestamp = DateTime.UtcNow.GetMillisecondsSinceEpoch()
         };
     }
 

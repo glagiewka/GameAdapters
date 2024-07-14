@@ -1,8 +1,10 @@
+using GameAdapters.Adapters.Models;
+
 namespace GameAdapters.Adapters;
 
-public interface IGameAdapter {
-    event EventHandler<Traces> TracesChanged;
+public interface IGameAdapter
+{
     string Name { get; }
+    event EventHandler<Traces> TracesChanged;
     Task Run(CancellationToken cancellationToken);
 }
-

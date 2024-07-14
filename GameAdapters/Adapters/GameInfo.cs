@@ -1,7 +1,7 @@
 namespace GameAdapters.Adapters;
 
-public class GameInfo {
-    public string Name { get; set; } = string.Empty;
-    public string Version { get; set; } = string.Empty;
+public record GameInfo
+{
+    public string Name { get; init; } = string.Empty;
+    public string Version { get; init; } = string.Empty;
 }
-

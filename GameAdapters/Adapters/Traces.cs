@@ -1,10 +1,9 @@
-public class Traces {
-   public double Throttle { get; set; }
-   public double Brake { get; set; }
-   public double Clutch { get; set; }
-   public double Steering { get; set; }
+namespace GameAdapters.Adapters;
 
-    public override string ToString() {
-        return $"Throttle: {Throttle}, Brake: {Brake}, Clutch: {Clutch}, Steering: {Steering}";
-    }  
+public record Traces
+{
+    public double Throttle { get; init; }
+    public double Brake { get; init; }
+    public double Clutch { get; init; }
+    public double Steering { get; init; }
 }

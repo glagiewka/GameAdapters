@@ -16,7 +16,7 @@ public class GameAdapterManager
         var adapterCollection = new GameAdapterCollection();
         adapterCollection.AddAdapter(new AssettoCorsaAdapter());
 
-        _statusManager.Activated += (sender, args) =>
+        _statusManager.Activated += (_, args) =>
         {
             GameStarted?.Invoke(null, args.GetGameInfo());
 
@@ -28,7 +28,7 @@ public class GameAdapterManager
             adapter.Run(tokenSource.Token);
         };
 
-        _statusManager.Deactivated += (sender, args) =>
+        _statusManager.Deactivated += (_, args) =>
         {
             GameEnded?.Invoke(null, args.Name);
 

@@ -12,8 +12,6 @@ public static class ConsoleHelper
     {
         progress = Math.Clamp(progress, 0, 1);
         var filledPartsCount = (int)Math.Truncate(Width * progress);
-        var filledPart = Enumerable.Repeat(FilledChar, filledPartsCount);
-        var unfilledPart = Enumerable.Repeat(UnfilledChar, Width - filledPartsCount);
 
         return new StringBuilder()
             .Insert(0, FilledChar, filledPartsCount)
